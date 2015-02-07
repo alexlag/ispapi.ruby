@@ -8,7 +8,7 @@ class TexterraAPI < IsprasAPI
   include TexterraNLP, TexterraKBM
   disable_rails_query_string_format
 
-  def initialize(key, name, ver='v3.1')
+  def initialize(key, name, ver)
     name='texterra' if name.nil? || name.empty?
     ver='v3.1' if ver.nil? || ver.empty?
     super(key, name, ver)
