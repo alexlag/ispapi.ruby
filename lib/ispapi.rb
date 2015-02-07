@@ -1,0 +1,1 @@
+require_relative 'ispapi/texterra_api'

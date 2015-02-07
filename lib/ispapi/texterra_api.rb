@@ -1,0 +1,95 @@
+require_relative './ispras_api'
+require_relative './texterra/nlp'
+require_relative './texterra/kbm'
+
+class TexterraAPI < IsprasAPI
+  # This class provides methods to work with Texterra REST via OpenAPI, including NLP and EKB methods and custom queriesю
+  # Note that NLP methods return annotations only
+  include TexterraNLP, TexterraKBM
+  disable_rails_query_string_format
+
+  def initialize(key, name, ver='v3.1')
+    name='texterra' if name.nil? || name.empty?
+    ver='v3.1' if ver.nil? || ver.empty?
+    super(key, name, ver)
+  end
+
+  # Section of NLP methods
+  # NLP basic helper methods
+
+  # Key concepts are the concepts providing short (conceptual) and informative text description.
+  # This service extracts a set of key concepts for a given text
+  #
+  # @param text [String] text to process
+  # @return [Array] list of weighted key concepts
+  def key_concepts(text)
+    key_concepts = key_concepts_annotate(text)[0][:value][:concepts_weights][:entry] || []
+    key_concepts.map { |kc| 
+      kc[:concept][:weight] = kc[:double] 
+      kc[:concept]
+    }
+  end
+
+  # Detects whether the given text has positive, negative or no sentiment
+  #
+  # @param text [String] text to process
+  # @return [Array] Sentiment of the text
+  def sentiment_analysis(text)
+    begin
+      polarity_detection_annotate(text)[0][:value].to_s || 'NEUTRAL'
+    rescue NoMethodError
+      'NEUTRAL'
+    end
+  end
+
+  # Detects whether the given text has positive, negative, or no sentiment, with respect to domain. 
+  #   If domain isn't provided, Domain detection is applied, this way method tries to achieve best results.
+  #   If no domain is detected general domain algorithm is applied
+  #
+  # @param text [String] text to process
+  # @param domain [String] domain to use. Can be empty
+  # @return [Hash] used :domain and detected :polarity
+  def domain_sentiment_analysis(text, domain='')
+    used_domain = 'general'
+    sentiment = 'NEUTRAL'
+    (domain_polarity_detection_annotate(text, domain) || []).each { |an|
+      sentiment = an[:value] if an[:@class].include? 'SentimentPolarity'
+      used_domain = an[:value] if an[:@class].include? 'DomainAnnotation'
+    }
+    {
+      domain: used_domain,
+      polarity: sentiment
+    }
+  end
+
+  # Extracts aspect-sentiment pairs from the given text. Currently only movie domain is supported
+  #
+  # @param text [String] text to process
+  # @return [Array] list of found aspects
+  def aspect_extraction(text)
+    (aspect_extraction_annotate(text) || []).map do |asp| 
+      {
+        text: as[:text],
+        aspect: as[:value][:aspect],
+        polarity: as[:value][:polarity]
+      }
+    end
+  end
+
+  # Detects the most appropriate meanings (concepts) for terms occurred in a given text
+  #
+  # @param text [String] text to process
+  # @return [Array] Texterra annotations
+  def disambiguation(text)
+    disambiguation_annotate(text)
+  end
+
+  private
+
+    def check_error(response)
+      hash = @nori.parse response.body
+      er_node = hash[:html][:body][:p].detect { |node| node.is_a? Hash and node[:b] == 'root cause' }
+      raise ApiError, er_node[:pre].gsub(/ru\.ispras.*:\s*/, '')
+    end
+
+end
