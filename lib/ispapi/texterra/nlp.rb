@@ -125,13 +125,9 @@ module TexterraNLP
   # @return [Array] Texterra annotations
   def domain_polarity_detection_annotate(text, domain='')
     specs = NLPSpecs[:domainPolarityDetection]
-  
     domain = '(%s)' % domain unless domain.empty?
-    
     result = POST(specs[:path] % domain, specs[:params], {text: text})[:nlp_document][:annotations][:i_annotation] 
-
     result = [].push result unless result.is_a? Array
-
     result.each do |e| 
       st, en  = e[:start].to_i, e[:end].to_i
       e[:text] = e[:annotated_text] = text[st..en]
@@ -148,11 +144,11 @@ module TexterraNLP
   end
 
   private
+
+    # Utility NLP part method
     def presetNLP(methodName, text)
-      # Utility NLP part method
       specs = NLPSpecs[methodName]
       result = POST(specs[:path], specs[:params], {text: text})[:nlp_document][:annotations][:i_annotation] 
-
       result = [].push result unless result.is_a? Array
       result.each do |e| 
         st, en  = e[:start].to_i, e[:end].to_i
