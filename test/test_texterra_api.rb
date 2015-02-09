@@ -1,12 +1,12 @@
 require 'minitest/autorun'
 require 'dotenv'
 Dotenv.load
-require_relative '../lib/ispapi'
+require_relative '../lib/ispapi/texterra_api'
 
 class TestTexterraAPI < Minitest::Test
 
   def setup
-    @texterra = TexterraAPI.new ENV['KEY'], ENV['SERVICE_NAME'], ENV['SERVICE_VERSION']
+    @texterra = TexterraAPI.new ENV['TEXTERRA_KEY'], ENV['TEXTERRA_SERVICE_NAME'], ENV['TEXTERRA_SERVICE_VERSION']
     @en_text = 'Apple today updated iMac to bring numerous high-performance enhancements to the leading all-in-one desktop. iMac now features fourth-generation Intel Core processors, new graphics, and next-generation Wi-Fi. In addition, it now supports PCIe-based flash storage, making its Fusion Drive and all-flash storage options up to 50 percent faster than the previous generation'
     @ru_text = 'Первые в этом году переговоры министра иностранных дел России Сергея Лаврова и госсекретаря США Джона Керри, длившиеся 1,5 часа, завершились в Мюнхене.'
     @en_tweet = 'mentioning veterens care which Mccain has voted AGAINST - SUPER GOOOOD point Obama+1 #tweetdebate'
