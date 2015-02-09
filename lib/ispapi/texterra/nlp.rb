@@ -109,14 +109,6 @@ module TexterraNLP
     presetNLP(:polarityDetection, text)
   end
 
-  # Extracts aspect-sentiment pairs from the given text. Currently only movie domain is supported
-  # 
-  # @param text [String] text to process
-  # @return [Array] Texterra annotations
-  def aspect_extraction_annotate(text)
-    presetNLP(:aspectExtraction, text)
-  end
-
   # Detects whether the given text has positive, negative, or no sentiment, with respect to domain. 
   # If domain isn't provided, Domain detection is applied, this way method tries to achieve best results.
   # If no domain is detected general domain algorithm is applied
@@ -127,6 +119,7 @@ module TexterraNLP
     specs = NLPSpecs[:domainPolarityDetection]
     domain = '(%s)' % domain unless domain.empty?
     result = POST(specs[:path] % domain, specs[:params], {text: text})[:nlp_document][:annotations][:i_annotation] 
+    return [] if result.nil?
     result = [].push result unless result.is_a? Array
     result.each do |e| 
       st, en  = e[:start].to_i, e[:end].to_i
@@ -149,6 +142,7 @@ module TexterraNLP
     def presetNLP(methodName, text)
       specs = NLPSpecs[methodName]
       result = POST(specs[:path], specs[:params], {text: text})[:nlp_document][:annotations][:i_annotation] 
+      return [] if result.nil?
       result = [].push result unless result.is_a? Array
       result.each do |e| 
         st, en  = e[:start].to_i, e[:end].to_i

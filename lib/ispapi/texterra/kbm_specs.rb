@@ -44,6 +44,10 @@ module TexterraKBMSpecs
     similarOverFilteredNeighbours: {
       path: 'similarity/%s/similar/all',
       params: {}
+    },
+    getAttributes: {
+      path: 'walker/%s',
+      params: {}
     }
   }
 end

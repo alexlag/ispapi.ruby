@@ -24,6 +24,7 @@ class TexterraAPI < IsprasAPI
   # @return [Array] list of weighted key concepts
   def key_concepts(text)
     key_concepts = key_concepts_annotate(text)[0][:value][:concepts_weights][:entry] || []
+    key_concepts = [].push key_concepts unless key_concepts.is_a? Array
     key_concepts.map { |kc| 
       kc[:concept][:weight] = kc[:double] 
       kc[:concept]
@@ -62,26 +63,16 @@ class TexterraAPI < IsprasAPI
     }
   end
 
-  # Extracts aspect-sentiment pairs from the given text. Currently only movie domain is supported
-  #
-  # @param text [String] text to process
-  # @return [Array] list of found aspects
-  def aspect_extraction(text)
-    (aspect_extraction_annotate(text) || []).map do |asp| 
-      {
-        text: as[:text],
-        aspect: as[:value][:aspect],
-        polarity: as[:value][:polarity]
-      }
-    end
-  end
-
   # Detects the most appropriate meanings (concepts) for terms occurred in a given text
   #
   # @param text [String] text to process
   # @return [Array] Texterra annotations
   def disambiguation(text)
     disambiguation_annotate(text)
+  end
+
+  def custom_query(path, query, form=nil)
+    form.nil? ? GET(path, query) : POST(path, query, form)
   end
 
   private
