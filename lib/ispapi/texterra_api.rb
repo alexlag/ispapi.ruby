@@ -20,8 +20,8 @@ class TexterraAPI < IsprasAPI
   # Key concepts are the concepts providing short (conceptual) and informative text description.
   # This service extracts a set of key concepts for a given text
   #
-  # @param text [String] text to process
-  # @return [Array] list of weighted key concepts
+  # @param [String] text Text to process
+  # @return [Array] Array of weighted key concepts
   def key_concepts(text)
     key_concepts = key_concepts_annotate(text)[0][:value][:concepts_weights][:entry] || []
     key_concepts = [].push key_concepts unless key_concepts.is_a? Array
@@ -33,7 +33,7 @@ class TexterraAPI < IsprasAPI
 
   # Detects whether the given text has positive, negative or no sentiment
   #
-  # @param text [String] text to process
+  # @param [String] text Text to process
   # @return [Array] Sentiment of the text
   def sentiment_analysis(text)
     begin
@@ -44,10 +44,10 @@ class TexterraAPI < IsprasAPI
   end
 
   # Detects whether the given text has positive, negative, or no sentiment, with respect to domain. 
-  #   If domain isn't provided, Domain detection is applied, this way method tries to achieve best results.
-  #   If no domain is detected general domain algorithm is applied
+  # If domain isn't provided, Domain detection is applied, this way method tries to achieve best results.
+  # If no domain is detected general domain algorithm is applied
   #
-  # @param text [String] text to process
+  # @param [String] text Text to process
   # @param domain [String] domain to use. Can be empty
   # @return [Hash] used :domain and detected :polarity
   def domain_sentiment_analysis(text, domain='')
@@ -65,7 +65,7 @@ class TexterraAPI < IsprasAPI
 
   # Detects the most appropriate meanings (concepts) for terms occurred in a given text
   #
-  # @param text [String] text to process
+  # @param [String] text Text to process
   # @return [Array] Texterra annotations
   def disambiguation(text)
     disambiguation_annotate(text)

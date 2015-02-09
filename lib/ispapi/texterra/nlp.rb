@@ -4,7 +4,7 @@ module TexterraNLP
   include TexterraNLPSpecs
   # Detects language of given text
   # 
-  # @param text [String] text to process
+  # @param [String] text Text to process
   # @return [Array] Texterra annotations
   def language_detection_annotate(text)
     presetNLP(:languageDetection, text)
@@ -12,7 +12,7 @@ module TexterraNLP
 
   # Detects boundaries of sentences in a given text
   # 
-  # @param text [String] text to process
+  # @param [String] text Text to process
   # @return [Array] Texterra annotations
   def sentence_detection(text)
     presetNLP(:sentenceDetection, text)
@@ -20,7 +20,7 @@ module TexterraNLP
 
   # Detects all tokens (minimal significant text parts) in a given text
   # 
-  # @param text [String] text to process
+  # @param [String] text Text to process
   # @return [Array] Texterra annotations
   def tokenization_annotate(text)
     presetNLP(:tokenization, text)
@@ -28,7 +28,7 @@ module TexterraNLP
 
   # Detects lemma of each word of a given text
   # 
-  # @param text [String] text to process
+  # @param [String] text Text to process
   # @return [Array] Texterra annotations
   def lemmatization_annotate(text)
     presetNLP(:lemmatization, text)
@@ -36,7 +36,7 @@ module TexterraNLP
 
   # Detects part of speech tag for each word of a given text
   # 
-  # @param text [String] text to process
+  # @param [String] text Text to process
   # @return [Array] Texterra annotations
   def pos_tagging_annotate(text)
     presetNLP(:posTagging, text)
@@ -44,7 +44,7 @@ module TexterraNLP
 
   # Tries to correct disprints and other spelling errors in a given text
   # 
-  # @param text [String] text to process
+  # @param [String] text Text to process
   # @return [Array] Texterra annotations
   def spelling_correction_annotate(text)
     presetNLP(:spellingCorrection, text)
@@ -52,7 +52,7 @@ module TexterraNLP
 
   # Finds all named entities occurences in a given text
   # 
-  # @param text [String] text to process
+  # @param [String] text Text to process
   # @return [Array] Texterra annotations
   def named_entities_annotate(text)
     presetNLP(:namedEntities, text)
@@ -60,7 +60,7 @@ module TexterraNLP
 
   # Extracts not overlapping terms within a given text; term is a textual representation for some concept of the real world
   # 
-  # @param text [String] text to process
+  # @param [String] text Text to process
   # @return [Array] Texterra annotations
   def term_detection_annotate(text)
     presetNLP(:termDetection, text)
@@ -68,7 +68,7 @@ module TexterraNLP
 
   # Detects the most appropriate meanings (concepts) for terms occurred in a given text
   # 
-  # @param text [String] text to process
+  # @param [String] text Text to process
   # @return [Array] Texterra annotations
   def disambiguation_annotate(text)
     presetNLP(:disambiguation, text)
@@ -77,7 +77,7 @@ module TexterraNLP
   # Key concepts are the concepts providing short (conceptual) and informative text description.
   # This service extracts a set of key concepts for a given text
   # 
-  # @param text [String] text to process
+  # @param [String] text Text to process
   # @return [Array] Texterra annotations
   def key_concepts_annotate(text)
     presetNLP(:keyConcepts, text)
@@ -87,7 +87,7 @@ module TexterraNLP
   # Currently only 2 specific domains are supported: 'movie' and 'politics'
   # If no domain from this list has been detected, the text is assumed to be no domain, or general domain
   # 
-  # @param text [String] text to process
+  # @param [String] text Text to process
   # @return [Array] Texterra annotations
   def domain_detection_annotate(text)
     presetNLP(:domainDetection, text)
@@ -95,7 +95,7 @@ module TexterraNLP
 
   # Detects whether the given text is subjective or not
   # 
-  # @param text [String] text to process
+  # @param [String] text Text to process
   # @return [Array] Texterra annotations
   def subjectivity_detection_annotate(text)
     presetNLP(:subjectivityDetection, text)
@@ -103,7 +103,7 @@ module TexterraNLP
 
   # Detects whether the given text has positive, negative or no sentiment
   # 
-  # @param text [String] text to process
+  # @param [String] text Text to process
   # @return [Array] Texterra annotations
   def polarity_detection_annotate(text)
     presetNLP(:polarityDetection, text)
@@ -113,7 +113,8 @@ module TexterraNLP
   # If domain isn't provided, Domain detection is applied, this way method tries to achieve best results.
   # If no domain is detected general domain algorithm is applied
   # 
-  # @param text [String] text to process
+  # @param [String] text Text to process
+  # @param [String] domain Domain for polarity detection
   # @return [Array] Texterra annotations
   def domain_polarity_detection_annotate(text, domain='')
     specs = NLPSpecs[:domainPolarityDetection]
@@ -130,7 +131,7 @@ module TexterraNLP
   # Detects Twitter-specific entities: Hashtags, User names, Emoticons, URLs.
   # And also: Stop-words, Misspellings, Spelling suggestions, Spelling corrections
   # 
-  # @param text [String] text to process
+  # @param [String] text Text to process
   # @return [Array] Texterra annotations
   def tweet_normalization(text)
     presetNLP(:tweetNormalization, text)
