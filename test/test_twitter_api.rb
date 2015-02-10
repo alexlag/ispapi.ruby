@@ -1,7 +1,7 @@
 require 'minitest/autorun'
 require 'dotenv'
 Dotenv.load
-require_relative '../lib/ispapi/twitter_api'
+require_relative '../lib/ispras-api/twitter_api'
 
 class TestTwitterAPI < Minitest::Test
 

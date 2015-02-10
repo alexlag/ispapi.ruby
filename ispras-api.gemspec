@@ -1,7 +1,7 @@
-require "./lib/ispapi/version"
+require "./lib/ispras-api/version"
 
 Gem::Specification.new do |s|
-  s.name        = 'ispapi'
+  s.name        = 'ispras-api'
   s.version     = Version.current
   s.date        = Version.current_date
   s.files       = `git ls-files`.split($\)
@@ -12,6 +12,8 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'minitest', '~> 5.5'
   s.add_development_dependency 'dotenv', '~> 1.0'
   s.summary     = "ISPRAS API Ruby SDK"
+  s.description     = "This is Ruby wrapper for REST API provided by ISPRAS. More info at https://api.ispras.ru/"
+  s.homepage = "https://github.com/alexlag/ispapi.ruby"
   s.authors     = ["Alexey Laguta"]
   s.email       = 'laguta@ispras.ru'
 end

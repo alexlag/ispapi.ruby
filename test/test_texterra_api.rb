@@ -1,7 +1,7 @@
 require 'minitest/autorun'
 require 'dotenv'
 Dotenv.load
-require_relative '../lib/ispapi/texterra_api'
+require_relative '../lib/ispras-api/texterra_api'
 
 class TestTexterraAPI < Minitest::Test
 
