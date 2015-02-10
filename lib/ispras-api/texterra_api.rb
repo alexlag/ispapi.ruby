@@ -7,6 +7,8 @@ class TexterraAPI < IsprasAPI
   # Note that NLP methods return annotations only
   include TexterraNLP, TexterraKBM
   disable_rails_query_string_format
+  nori = Nori.new(parser: :rexml, convert_tags_to: lambda { |tag| tag.snakecase.to_sym })
+  parser Proc.new { |data| nori.parse data }
 
   def initialize(key, name, ver)
     name='texterra' if name.nil? || name.empty?
@@ -78,7 +80,7 @@ class TexterraAPI < IsprasAPI
   private
 
     def check_error(response)
-      hash = @nori.parse response.body
+      hash = response.parsed_response
       er_node = hash[:html][:body][:p].detect { |node| node.is_a? Hash and node[:b] == 'root cause' }
       raise ApiError, er_node[:pre].gsub(/ru\.ispras.*:\s*/, '')
     end

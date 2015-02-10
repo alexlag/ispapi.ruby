@@ -10,6 +10,7 @@ class TestTwitterAPI < Minitest::Test
   end  
 
   def test_extract_dde
-    @twitter.extract_dde lang: 'en', username: 'Ann', screenname: 'bob', description: 'I am Ann from NY', tweet:'Hi there, I am Ann fromNY'
+    req = { lang: 'en', username: 'Ann', screenname: 'bob', description: 'I am Ann from NY', tweet:'Hi there, I am Ann fromNY' }
+    assert_instance_of Hash, @twitter.extract_dde(req)
   end
 end
