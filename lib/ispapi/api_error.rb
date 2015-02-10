@@ -1,3 +1,1 @@
-class ApiError < StandardError
-
-end
+ApiError = Class.new StandardError

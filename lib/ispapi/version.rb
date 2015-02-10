@@ -6,7 +6,7 @@ module Version
   PRE = nil
   
   YEAR = "2015"
-  MONTH = "2"
+  MONTH = "02"
   DAY = "10"
 
   def self.to_s
