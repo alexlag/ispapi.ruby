@@ -10,7 +10,7 @@ class TexterraAPI < IsprasAPI
   nori = Nori.new(parser: :rexml, convert_tags_to: lambda { |tag| tag.snakecase.to_sym })
   parser Proc.new { |data| nori.parse data }
 
-  def initialize(key, name, ver)
+  def initialize(key, name=nil, ver=nil)
     name='texterra' if name.nil? || name.empty?
     ver='v3.1' if ver.nil? || ver.empty?
     super(key, name, ver)

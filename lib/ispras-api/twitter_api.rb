@@ -6,7 +6,7 @@ class TwitterAPI < IsprasAPI
   nori = Nori.new(parser: :rexml, convert_tags_to: lambda { |tag| tag.snakecase.to_sym })
   parser Proc.new { |data| nori.parse data }
 
-  def initialize(key, name, ver)
+  def initialize(key, name=nil, ver=nil)
     name='twitter-nlp' if name.nil? || name.empty?
     ver='1.0' if ver.nil? || ver.empty?
     super(key, name, ver)
