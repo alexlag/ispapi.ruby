@@ -32,7 +32,7 @@ module TexterraNLPSpecs
     posTagging: {
         path: 'nlp/pos',
         params: {
-          :class => 'ru.ispras.texterra.core.nlp.datamodel.pos.IPOSToken',
+          :class => 'ru.ispras.texterra.core.nlp.datamodel.pos.POSToken',
           filtering: 'KEEPING'
         }
     },

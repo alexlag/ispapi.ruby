@@ -57,6 +57,34 @@ class TestTexterraAPI < Minitest::Test
     assert_instance_of Array, @texterra.language_detection_annotate(@ru_tweet) 
   end
 
+  def test_sentence_detection_annotate
+    assert_instance_of Array, @texterra.sentence_detection_annotate(@en_text) 
+    assert_instance_of Array, @texterra.sentence_detection_annotate(@ru_text) 
+    assert_instance_of Array, @texterra.sentence_detection_annotate(@en_tweet) 
+    assert_instance_of Array, @texterra.sentence_detection_annotate(@ru_tweet) 
+  end
+
+  def test_tokenization_annotate
+    assert_instance_of Array, @texterra.tokenization_annotate(@en_text) 
+    assert_instance_of Array, @texterra.tokenization_annotate(@ru_text) 
+    assert_instance_of Array, @texterra.tokenization_annotate(@en_tweet) 
+    assert_instance_of Array, @texterra.tokenization_annotate(@ru_tweet) 
+  end
+
+  def test_lemmatization_annotate
+    assert_instance_of Array, @texterra.lemmatization_annotate(@en_text) 
+    assert_instance_of Array, @texterra.lemmatization_annotate(@ru_text) 
+    assert_instance_of Array, @texterra.lemmatization_annotate(@en_tweet) 
+    assert_instance_of Array, @texterra.lemmatization_annotate(@ru_tweet) 
+  end
+
+  def test_pos_tagging_annotate
+    assert_instance_of Array, @texterra.pos_tagging_annotate(@en_text) 
+    assert_instance_of Array, @texterra.pos_tagging_annotate(@ru_text) 
+    assert_instance_of Array, @texterra.pos_tagging_annotate(@en_tweet) 
+    assert_instance_of Array, @texterra.pos_tagging_annotate(@ru_tweet) 
+  end
+
   def test_named_entities_annotate
     assert_instance_of Array, @texterra.named_entities_annotate(@en_text) 
     assert_instance_of Array, @texterra.named_entities_annotate(@ru_text) 

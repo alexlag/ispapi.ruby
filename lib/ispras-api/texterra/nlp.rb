@@ -14,7 +14,7 @@ module TexterraNLP
   # 
   # @param [String] text Text to process
   # @return [Array] Texterra annotations
-  def sentence_detection(text)
+  def sentence_detection_annotate(text)
     presetNLP(:sentenceDetection, text)
   end
 
