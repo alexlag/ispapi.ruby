@@ -1,18 +1,20 @@
 require_relative './ispras_api'
 
 class TwitterAPI < IsprasAPI
-  #This class provides methods to work with Twitter NLP REST via OpenAPI
+  # This class provides methods to work with Twitter NLP REST via OpenAPI
   disable_rails_query_string_format
-  nori = Nori.new(parser: :rexml, convert_tags_to: lambda { |tag| tag.snakecase.to_sym })
-  parser Proc.new { |data| nori.parse data }
+  nori = Nori.new(parser: :rexml,
+                  convert_tags_to: ->(tag) { tag.snakecase.to_sym })
+  parser proc { |data| nori.parse data }
 
-  def initialize(key, name=nil, ver=nil)
-    name='twitter-nlp' if name.nil? || name.empty?
-    ver='1.0' if ver.nil? || ver.empty?
+  def initialize(key, name = nil, ver = nil)
+    name = 'twitter-nlp' if name.nil? || name.empty?
+    ver = '1.0' if ver.nil? || ver.empty?
     super(key, name, ver)
   end
 
-  # Extracts demographic attributes from provided Twitter info. All info is required, but can be empty
+  # Extracts demographic attributes from provided Twitter info.
+  # All info is required, but can be empty
   #
   # @param [Hash] params
   # @option params [String] :lang Language of tweets
@@ -26,16 +28,17 @@ class TwitterAPI < IsprasAPI
     POST 'extract', {}, params
   end
 
-  def custom_query(path, query, form=nil)
+  def custom_query(path, query, form = nil)
     form.nil? ? GET(path, query) : POST(path, query, form)
   end
 
   private
 
-    def check_error(response)
-      hash = response.parsed_response
-      er_node = hash[:html][:body][:p].detect { |node| node.is_a? Hash and node[:b] == 'root cause' }
-      raise ApiError, er_node[:pre].gsub(/ru\.ispras.*:\s*/, '')
+  def check_error(response)
+    hash = response.parsed_response
+    er_node = hash[:html][:body][:p].detect do |node|
+      node.is_a?(Hash) && node[:b] == 'root cause'
     end
-
+    fail ApiError, er_node[:pre].gsub(/ru\.ispras.*:\s*/, '')
+  end
 end

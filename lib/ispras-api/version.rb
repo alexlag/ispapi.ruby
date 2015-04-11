@@ -1,22 +1,21 @@
 module Version
-
   MAJOR = 0
   MINOR = 1
   PATCH = 3
   PRE = nil
-  
-  YEAR = "2015"
-  MONTH = "02"
-  DAY = "12"
+
+  YEAR = '2015'
+  MONTH = '02'
+  DAY = '12'
 
   def self.to_s
-    [MAJOR, MINOR, PATCH, PRE].compact.join(".")
+    [MAJOR, MINOR, PATCH, PRE].compact.join('.')
   end
 
   def self.current
     to_s
   end
-  
+
   def self.current_date
     "#{YEAR}-#{MONTH}-#{DAY}"
   end
@@ -30,5 +29,4 @@ module Version
     version_hash[:pre] = version_array[3]
     version_hash
   end
-
 end

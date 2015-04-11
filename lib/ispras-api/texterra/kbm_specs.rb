@@ -1,6 +1,6 @@
 module TexterraKBMSpecs
   # Path and parameters for preset KBM queries
-  KBMSpecs = {
+  KBM_SPECS = {
     termPresence: {
       path: 'representation/%s/contained',
       params: {}
