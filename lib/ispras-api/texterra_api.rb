@@ -31,7 +31,7 @@ class TexterraAPI < IsprasAPI
     key_concepts = key_concepts_annotate(text)[0][:value][:concepts_weights][:entry] || []
     key_concepts = [].push key_concepts unless key_concepts.is_a? Array
     key_concepts.map do |kc|
-      kc[:concept][:weight] = kc[:double] 
+      kc[:concept][:weight] = kc[:double]
       kc[:concept]
     end
   end

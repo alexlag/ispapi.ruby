@@ -122,10 +122,7 @@ module TexterraNLP
     result = POST(specs[:path] % domain, specs[:params], text: text)[:nlp_document][:annotations][:i_annotation]
     return [] if result.nil?
     result = [].push result unless result.is_a? Array
-    result.each do |e|
-      st, en  = e[:start].to_i, e[:end].to_i
-      e[:text] = e[:annotated_text] = text[st..en]
-    end
+    result.map { |e| assign_text(e, text) }
   end
 
   # Detects Twitter-specific entities: Hashtags, User names, Emoticons, URLs.
@@ -137,6 +134,16 @@ module TexterraNLP
     preset_nlp(:tweetNormalization, text)
   end
 
+  # Detects Syntax relations in text. Only works for russian texts
+  #
+  # @param [String] text Text to process
+  # @return [Array] Texterra annotations
+  def syntax_detection(text)
+    preset_nlp(:syntaxDetection, text).each do |an|
+      an[:value][:parent_token] = assign_text(an[:value][:parent_token], text) if an[:value] && an[:value][:parent_token]
+    end
+  end
+
   private
 
   # Utility NLP part method
@@ -145,9 +152,15 @@ module TexterraNLP
     result = POST(specs[:path], specs[:params], text: text)[:nlp_document][:annotations][:i_annotation]
     return [] if result.nil?
     result = [].push result unless result.is_a? Array
-    result.each do |e| 
-      st, en  = e[:start].to_i, e[:end].to_i
-      e[:text] = e[:annotated_text] = text[st..en]
-    end
+    result.map { |an| assign_text(an, text) }
+  end
+
+  # Utility text assignement for annotation
+  def assign_text(an, text)
+    return an unless an && an[:start] && an[:end]
+    st, en = an[:start].to_i, an[:end].to_i
+    an[:text] = text[st..en]
+    an[:annotated_text] = text
+    an
   end
 end

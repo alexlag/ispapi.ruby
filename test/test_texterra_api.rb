@@ -49,6 +49,10 @@ class TestTexterraAPI < Minitest::Test
     end
   end
 
+  def test_syntax_detection
+    assert_instance_of Array, @texterra.syntax_detection(@ru_text)
+  end
+
   def test_language_detection_annotate
     assert_instance_of Array, @texterra.language_detection_annotate(@en_text)
     assert_instance_of Array, @texterra.language_detection_annotate(@ru_text)

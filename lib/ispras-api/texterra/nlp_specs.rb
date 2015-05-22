@@ -2,7 +2,7 @@ module TexterraNLPSpecs
   # Path and parameters for preset NLP queries
   NLP_SPECS = {
     languageDetection: {
-      path: 'nlp/ru.ispras.texterra.core.nlp.pipelines.LanguageDetectionPipeline',
+      path: 'nlp/language',
       params: {
         class: 'ru.ispras.texterra.core.nlp.datamodel.Language',
         filtering: 'KEEPING'
@@ -37,28 +37,28 @@ module TexterraNLPSpecs
       }
     },
     spellingCorrection: {
-      path: 'nlp/ru.ispras.texterra.core.nlp.annotators.spelling.SpellingCorrector',
+      path: 'nlp/spellingcorrection',
       params: {
         class: 'ru.ispras.texterra.core.nlp.datamodel.SpellingCorrection',
         filtering: 'KEEPING'
       }
     },
     namedEntities: {
-      path: 'nlp/ru.ispras.texterra.core.nlp.pipelines.NETaggingPipeline',
+      path: 'nlp/namedentity',
       params: {
         class: 'ru.ispras.texterra.core.nlp.datamodel.ne.NamedEntityToken',
         filtering: 'KEEPING'
       }
     },
     termDetection: {
-      path: 'nlp/ru.ispras.texterra.core.nlp.pipelines.TermDetectionPipeline',
+      path: 'nlp/term',
       params: {
         class: 'ru.ispras.texterra.core.nlp.datamodel.Frame',
         filtering: 'KEEPING'
       }
     },
     disambiguation: {
-      path: 'nlp/ru.ispras.texterra.core.nlp.pipelines.DisambiguationPipeline',
+      path: 'nlp/disambiguation',
       params: {
         class: 'ru.ispras.texterra.core.nlp.datamodel.DisambiguatedPhrase',
         filtering: 'KEEPING'
@@ -66,7 +66,7 @@ module TexterraNLPSpecs
 
     },
     keyConcepts: {
-      path: 'nlp/ru.ispras.texterra.core.nlp.pipelines.KeyConceptsPipeline',
+      path: 'nlp/keyconcepts',
       params: {
         class: 'ru.ispras.texterra.core.nlp.datamodel.KeyconceptsSemanticContext',
         filtering: 'KEEPING'
@@ -119,7 +119,14 @@ module TexterraNLPSpecs
         class: %w(sentence language token),
         filtering: 'REMOVING'
       }
-
+    },
+    syntaxDetection: {
+      path: 'nlp/syntax',
+      params: {
+        class: 'ru.ispras.texterra.core.nlp.datamodel.syntax.SyntaxRelation',
+        filtering: 'KEEPING'
+      }
     }
+
   }
 end
