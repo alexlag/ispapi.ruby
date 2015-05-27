@@ -121,7 +121,7 @@ class TestTexterraAPI < Minitest::Test
     assert_instance_of Hash, @texterra.term_commonness('android', '713:enwiki')
   end
 
-  def test_neignbours
+  def test_neighbours
     assert_instance_of Hash, @texterra.neighbours('12:enwiki')
     assert_instance_of Hash, @texterra.neighbours('12:enwiki', linkType: 'RELATED', nodeType: 'REGULAR', minDepth: 1, maxDepth: 3)
     assert_instance_of Hash, @texterra.neighbours(['12:enwiki', '713:enwiki'])
