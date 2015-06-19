@@ -11,6 +11,7 @@ class IsprasAPI
     if key && key.size == 40
       self.class.base_uri ROOT_URL % [name, ver]
       self.class.default_params apikey: key
+      self.class.read_timeout 60
     else
       fail ApiError, 'Please provide proper apikey'
     end
