@@ -77,14 +77,4 @@ class TexterraAPI < IsprasAPI
   def custom_query(path, query, form = nil)
     form.nil? ? GET(path, query) : POST(path, query, form)
   end
-
-  private
-
-  def check_error(response)
-    hash = response.parsed_response
-    er_node = hash[:html][:body][:p].detect do |node|
-      node.is_a?(Hash) && node[:b] == 'root cause'
-    end
-    fail ApiError, er_node[:pre].gsub(/ru\.ispras.*:\s*/, '')
-  end
 end
