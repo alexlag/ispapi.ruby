@@ -141,6 +141,7 @@ module TexterraKBM
   #
   # @note check REST Documentation for values
   def similar_over_filtered_neighbours(concepts, params = { linkWeight: 'MAX' })
+    params[:among] ||= ''
     preset_kbm :similarOverFilteredNeighbours, "#{wrap_concepts(concepts)};linkWeight=#{params[:linkWeight]}", params
   end
 
