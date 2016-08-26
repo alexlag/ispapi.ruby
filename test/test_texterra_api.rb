@@ -45,9 +45,7 @@ class TestTexterraAPI < Minitest::Test
 
   def test_tweet_normalization
     assert_instance_of Array, @texterra.tweet_normalization(@en_tweet)
-    assert_raises ApiError do
-      @texterra.tweet_normalization(@ru_tweet)
-    end
+    assert_instance_of Array, @texterra.tweet_normalization(@ru_tweet)
   end
 
   def test_syntax_detection
