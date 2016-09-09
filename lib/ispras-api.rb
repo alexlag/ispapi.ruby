@@ -1,1 +1,1 @@
-require_relative 'ispras-api/texterra_api'
+require_relative './ispras-api/texterra_api'

@@ -1,20 +1,8 @@
 module TexterraKBMSpecs
   # Path and parameters for preset KBM queries
   KBM_SPECS = {
-    termPresence: {
-      path: 'representation/%s/contained',
-      params: {}
-    },
-    termInfoMeasure: {
-      path: 'representation/%s/infomeasure',
-      params: {}
-    },
-    termMeanings: {
-      path: 'representation/%s/meanings',
-      params: {}
-    },
-    termCommonness: {
-      path: 'representation/%s/commonness/%s',
+    representationTerms: {
+      path: 'representation/terms',
       params: {}
     },
     neighbours: {

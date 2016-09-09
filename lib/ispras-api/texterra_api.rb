@@ -1,3 +1,4 @@
+require 'json'
 require_relative './ispras_api'
 require_relative './texterra/nlp'
 require_relative './texterra/kbm'
@@ -10,7 +11,16 @@ class TexterraAPI < IsprasAPI
   disable_rails_query_string_format
   nori = Nori.new(parser: :rexml,
                   convert_tags_to: ->(tag) { tag.snakecase.to_sym })
-  parser proc { |data| nori.parse data }
+  parser(
+    proc do |data|
+      result = nori.parse(data)
+      begin
+        result = JSON.parse(data, symbolize_names: true) if result.empty?
+      rescue
+      end
+      result
+    end
+  )
 
   def initialize(key, name = nil, ver = nil)
     name = 'texterra' if name.nil? || name.empty?

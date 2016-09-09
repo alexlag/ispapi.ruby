@@ -101,23 +101,17 @@ class TestTexterraAPI < Minitest::Test
     assert_instance_of Array, @texterra.subjectivity_detection_annotate(@ru_tweet)
   end
 
-  def test_term_presence
-    res = @texterra.term_presence('Anarchism')
+  def test_representation_terms
+    term_candidates = [
+      { start: 0, end: 5 },
+      { start: 6, end: 11 }
+    ]
+    res = @texterra.representation_terms(@en_text, term_candidates, featureType: ['commonness', 'info-measure'])
     assert_instance_of Hash, res
-    assert_equal true, res[:presence]
-  end
-
-  def test_term_info_measure
-    assert_instance_of Hash, @texterra.term_info_measure('Anarchism')
-  end
-
-  def test_term_meanings
-    assert_instance_of Hash, @texterra.term_meanings('android')
-  end
-
-  def test_term_commonness
-    assert_instance_of Hash, @texterra.term_commonness('android')
-    assert_instance_of Hash, @texterra.term_commonness('android', '713:enwiki')
+    assert_equal res[:text], @en_text
+    assert_instance_of Hash, res[:annotations]
+    assert_instance_of Array, res[:annotations][:commonness]
+    assert_instance_of Array, res[:annotations][:'info-measure']
   end
 
   def test_neighbours

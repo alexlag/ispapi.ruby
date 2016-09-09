@@ -1,6 +1,6 @@
 require 'httparty'
 require 'nori'
-require_relative 'api_error'
+require_relative './api_error'
 
 class IsprasAPI
   include HTTParty

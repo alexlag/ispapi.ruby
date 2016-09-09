@@ -32,7 +32,7 @@ module TexterraNLPSpecs
     posTagging: {
       path: 'nlp/pos',
       params: {
-        class: 'ru.ispras.texterra.core.nlp.datamodel.pos.POSToken',
+        class: 'pos-token',
         filtering: 'KEEPING'
       }
     },
@@ -60,7 +60,7 @@ module TexterraNLPSpecs
     disambiguation: {
       path: 'nlp/disambiguation',
       params: {
-        class: 'dmb-phrase',
+        class: 'disambiguated-phrase',
         filtering: 'KEEPING'
       }
 
@@ -68,7 +68,7 @@ module TexterraNLPSpecs
     keyConcepts: {
       path: 'nlp/keyconcepts',
       params: {
-        class: 'keyconcepts-sc',
+        class: 'keyconcepts',
         filtering: 'KEEPING'
       }
 
@@ -84,7 +84,7 @@ module TexterraNLPSpecs
     subjectivityDetection: {
       path: 'nlp/subjectivity',
       params: {
-        class: 'sentiment-subjectivity',
+        class: 'subjectivity',
         filtering: 'KEEPING'
       }
 
@@ -92,7 +92,7 @@ module TexterraNLPSpecs
     polarityDetection: {
       path: 'nlp/polarity',
       params: {
-        class: 'sentiment-polarity',
+        class: 'polarity',
         filtering: 'KEEPING'
       }
 
@@ -108,7 +108,7 @@ module TexterraNLPSpecs
     domainPolarityDetection: {
       path: 'nlp/domainpolarity%s',
       params: {
-        class: %w(domain sentiment-polarity),
+        class: %w(domain polarity),
         filtering: 'KEEPING'
       }
 

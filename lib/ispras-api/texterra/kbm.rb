@@ -3,43 +3,29 @@ require_relative './kbm_specs'
 module TexterraKBM
   include TexterraKBMSpecs
 
-  # Determines if Knowledge base contains the specified term
+  # Determines if Knowledge base contains the specified terms and computes features of the specified types for them.
   #
-  # @param term [String] term
-  # @return [Hash] with :presence field
-  def term_presence(term)
-    preset_kbm :termPresence, term
-  end
-
-  # Returns information measure for the given term. Information measure denotes,
-  # how often given term is used as link caption among all its occurences
+  # @param [String] text Text with term-candidates
+  # @param [Array] term_candidates Term-candidates start and end
+  # @param [Hash] params Specifies types of features required to compute
   #
-  # @param term [String] term
-  # @result [Hash] with :infomeasure field
-  def term_info_measure(term)
-    preset_kbm :termInfoMeasure, term
-  end
-
-  # Return concepts resource from the Knowledge base corresponding
-  # to the found meanings of the given term
-  #
-  # @param term [String] term
-  # @result [Hash] with :elements field
-  def term_meanings(term)
-    preset_kbm :termMeanings, term
-  end
-
-  # If concept isn't provided, returns concepts with their commonness,
-  # corresponding to the found meanings of the given term.
-  # Commonness denotes, how often the given term is associated with the given concept.
-  # With concept(format is {id}:{kbname}) returns commonness of given concept for the given term.
-  #
-  # @param term [String] term
-  # @param concept [String] concept as {id}:{kbname}
-  # @result [Hash] with :elements field
-  def term_commonness(term, concept = '')
-    concept = "id=#{concept}" unless concept.empty?
-    preset_kbm :termCommonness, [term, concept]
+  # @result [Array] Texterra annotations
+  def representation_terms(text, term_candidates, params={featureType: ['commonness', 'info-measure']})
+    path = KBM_SPECS[:representationTerms][:path]
+    options = {
+      headers: {
+        'Content-Type' => 'application/json'
+      },
+      query: params,
+      body: {
+        text: text,
+        annotations: {
+          'term-candidate' => term_candidates
+        }
+      }.to_json
+    }
+    response = self.class.post "/#{path}", options
+    response.code == 200 ? response.parsed_response : check_error(response)
   end
 
   # Return neighbour concepts for the given concepts(list or single concept, each concept is {id}:{kbname}).
@@ -97,7 +83,7 @@ module TexterraKBM
     preset_kbm :allPairsSimilarity, ["#{wrap_concepts(first_concepts)}linkWeight=#{linkWeight}", wrap_concepts(second_concepts)]
   end
 
-  # Compute similarity from each concept from the first list to all concepts(list or single concept, each concept is {id}:{kbname}) from the second list as a whole. 
+  # Compute similarity from each concept from the first list to all concepts(list or single concept, each concept is {id}:{kbname}) from the second list as a whole.
   # Links of second list concepts(each concept is {id}:{kbname}) are collected together, thus forming a "virtual" article, similarity to which is computed.
   #
   # @param [Array<String>] concepts Array of concepts as {id}:{kbname}
@@ -107,7 +93,7 @@ module TexterraKBM
     preset_kbm :similarityToVirtualArticle, ["#{wrap_concepts(concepts)}linkWeight=#{linkWeight}", wrap_concepts(virtual_aricle)]
   end
 
-  # Compute similarity between two sets of concepts(list or single concept, each concept is {id}:{kbname}) as between "virtual" articles from these sets. 
+  # Compute similarity between two sets of concepts(list or single concept, each concept is {id}:{kbname}) as between "virtual" articles from these sets.
   # The links of each virtual article are composed of links of the collection of concepts.
   #
   # @param [Array<String>] first_virtual_aricle Array of concepts as {id}:{kbname}
