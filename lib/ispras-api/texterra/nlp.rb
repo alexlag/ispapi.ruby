@@ -5,7 +5,7 @@ module TexterraNLP
   # Detects language of given text
   #
   # @param [String] text Text to process
-  # @return [Array] Texterra annotations
+  # @return [Hash] Texterra document
   def language_detection_annotate(text)
     preset_nlp(:languageDetection, text)
   end
@@ -13,7 +13,7 @@ module TexterraNLP
   # Detects boundaries of sentences in a given text
   #
   # @param [String] text Text to process
-  # @return [Array] Texterra annotations
+  # @return [Hash] Texterra document
   def sentence_detection_annotate(text)
     preset_nlp(:sentenceDetection, text)
   end
@@ -21,7 +21,7 @@ module TexterraNLP
   # Detects all tokens (minimal significant text parts) in a given text
   #
   # @param [String] text Text to process
-  # @return [Array] Texterra annotations
+  # @return [Hash] Texterra document
   def tokenization_annotate(text)
     preset_nlp(:tokenization, text)
   end
@@ -29,7 +29,7 @@ module TexterraNLP
   # Detects lemma of each word of a given text
   #
   # @param [String] text Text to process
-  # @return [Array] Texterra annotations
+  # @return [Hash] Texterra document
   def lemmatization_annotate(text)
     preset_nlp(:lemmatization, text)
   end
@@ -37,7 +37,7 @@ module TexterraNLP
   # Detects part of speech tag for each word of a given text
   #
   # @param [String] text Text to process
-  # @return [Array] Texterra annotations
+  # @return [Hash] Texterra document
   def pos_tagging_annotate(text)
     preset_nlp(:posTagging, text)
   end
@@ -45,7 +45,7 @@ module TexterraNLP
   # Tries to correct disprints and other spelling errors in a given text
   #
   # @param [String] text Text to process
-  # @return [Array] Texterra annotations
+  # @return [Hash] Texterra document
   def spelling_correction_annotate(text)
     preset_nlp(:spellingCorrection, text)
   end
@@ -53,7 +53,7 @@ module TexterraNLP
   # Finds all named entities occurences in a given text
   #
   # @param [String] text Text to process
-  # @return [Array] Texterra annotations
+  # @return [Hash] Texterra document
   def named_entities_annotate(text)
     preset_nlp(:namedEntities, text)
   end
@@ -61,7 +61,7 @@ module TexterraNLP
   # Extracts not overlapping terms within a given text; term is a textual representation for some concept of the real world
   #
   # @param [String] text Text to process
-  # @return [Array] Texterra annotations
+  # @return [Hash] Texterra document
   def term_detection_annotate(text)
     preset_nlp(:termDetection, text)
   end
@@ -69,7 +69,7 @@ module TexterraNLP
   # Detects the most appropriate meanings (concepts) for terms occurred in a given text
   #
   # @param [String] text Text to process
-  # @return [Array] Texterra annotations
+  # @return [Hash] Texterra document
   def disambiguation_annotate(text)
     preset_nlp(:disambiguation, text)
   end
@@ -78,7 +78,7 @@ module TexterraNLP
   # This service extracts a set of key concepts for a given text
   #
   # @param [String] text Text to process
-  # @return [Array] Texterra annotations
+  # @return [Hash] Texterra document
   def key_concepts_annotate(text)
     preset_nlp(:keyConcepts, text)
   end
@@ -88,7 +88,7 @@ module TexterraNLP
   # If no domain from this list has been detected, the text is assumed to be no domain, or general domain
   #
   # @param [String] text Text to process
-  # @return [Array] Texterra annotations
+  # @return [Hash] Texterra document
   def domain_detection_annotate(text)
     preset_nlp(:domainDetection, text)
   end
@@ -96,7 +96,7 @@ module TexterraNLP
   # Detects whether the given text is subjective or not
   #
   # @param [String] text Text to process
-  # @return [Array] Texterra annotations
+  # @return [Hash] Texterra document
   def subjectivity_detection_annotate(text)
     preset_nlp(:subjectivityDetection, text)
   end
@@ -104,7 +104,7 @@ module TexterraNLP
   # Detects whether the given text has positive, negative or no sentiment
   #
   # @param [String] text Text to process
-  # @return [Array] Texterra annotations
+  # @return [Hash] Texterra document
   def polarity_detection_annotate(text)
     preset_nlp(:polarityDetection, text)
   end
@@ -115,21 +115,22 @@ module TexterraNLP
   #
   # @param [String] text Text to process
   # @param [String] domain Domain for polarity detection
-  # @return [Array] Texterra annotations
+  # @return [Hash] Texterra document
   def domain_polarity_detection_annotate(text, domain = '')
     specs = NLP_SPECS[:domainPolarityDetection]
     domain = "(#{domain})" unless domain.empty?
-    result = POST(specs[:path] % domain, specs[:params], text: text)[:nlp_document][:annotations][:i_annotation]
-    return [] if result.nil?
-    result = [].push result unless result.is_a? Array
-    result.map { |e| assign_text(e, text) }
+    result = POST(specs[:path] % domain, specs[:params], {text: text}, :json)
+    result[:annotations].each do |key, value|
+      value.map! { |an| assign_text(an, text) }
+    end
+    result
   end
 
   # Detects Twitter-specific entities: Hashtags, User names, Emoticons, URLs.
   # And also: Stop-words, Misspellings, Spelling suggestions, Spelling corrections
   #
   # @param [String] text Text to process
-  # @return [Array] Texterra annotations
+  # @return [Hash] Texterra document
   def tweet_normalization(text)
     preset_nlp(:tweetNormalization, text)
   end
@@ -137,11 +138,13 @@ module TexterraNLP
   # Detects Syntax relations in text. Only works for russian texts
   #
   # @param [String] text Text to process
-  # @return [Array] Texterra annotations
+  # @return [Hash] Texterra document
   def syntax_detection(text)
-    preset_nlp(:syntaxDetection, text).each do |an|
-      an[:value][:parent_token] = assign_text(an[:value][:parent_token], text) if an[:value] && an[:value][:parent_token]
+    result = preset_nlp(:syntaxDetection, text)
+    result[:annotations][:'syntax-relation'].each do |an|
+      an[:value][:parent] = assign_text(an[:value][:parent], text) if an[:value] && an[:value][:parent]
     end
+    result
   end
 
   private
@@ -149,10 +152,11 @@ module TexterraNLP
   # Utility NLP part method
   def preset_nlp(methodName, text)
     specs = NLP_SPECS[methodName]
-    result = POST(specs[:path], specs[:params], text: text)[:nlp_document][:annotations][:i_annotation]
-    return [] if result.nil?
-    result = [].push result unless result.is_a? Array
-    result.map { |an| assign_text(an, text) }
+    result = POST(specs[:path], specs[:params], {text: text}, :json)
+    result[:annotations].each do |key, value|
+      value.map! { |an| assign_text(an, text) }
+    end
+    result
   end
 
   # Utility text assignement for annotation

@@ -44,61 +44,123 @@ class TestTexterraAPI < Minitest::Test
   end
 
   def test_tweet_normalization
-    assert_instance_of Array, @texterra.tweet_normalization(@en_tweet)
-    assert_instance_of Array, @texterra.tweet_normalization(@ru_tweet)
+    res = @texterra.tweet_normalization(@en_tweet)
+    assert_instance_of Hash, res
+    assert_equal @en_tweet, res[:text]
+    res = @texterra.tweet_normalization(@ru_tweet)
+    assert_instance_of Hash, res
+    assert_equal @ru_tweet, res[:text]
   end
 
   def test_syntax_detection
-    assert_instance_of Array, @texterra.syntax_detection(@ru_text)
+    res = @texterra.syntax_detection(@ru_text)
+    assert_instance_of Hash, res
+    assert_equal @ru_text, res[:text]
   end
 
   def test_language_detection_annotate
-    assert_instance_of Array, @texterra.language_detection_annotate(@en_text)
-    assert_instance_of Array, @texterra.language_detection_annotate(@ru_text)
-    assert_instance_of Array, @texterra.language_detection_annotate(@en_tweet)
-    assert_instance_of Array, @texterra.language_detection_annotate(@ru_tweet)
+    res = @texterra.language_detection_annotate(@en_text)
+    assert_instance_of Hash, res
+    assert_equal @en_text, res[:text]
+    res = @texterra.language_detection_annotate(@ru_text)
+    assert_instance_of Hash, res
+    assert_equal @ru_text, res[:text]
+    res = @texterra.language_detection_annotate(@en_tweet)
+    assert_instance_of Hash, res
+    assert_equal @en_tweet, res[:text]
+    res = @texterra.language_detection_annotate(@ru_tweet)
+    assert_instance_of Hash, res
+    assert_equal @ru_tweet, res[:text]
   end
 
   def test_sentence_detection_annotate
-    assert_instance_of Array, @texterra.sentence_detection_annotate(@en_text)
-    assert_instance_of Array, @texterra.sentence_detection_annotate(@ru_text)
-    assert_instance_of Array, @texterra.sentence_detection_annotate(@en_tweet)
-    assert_instance_of Array, @texterra.sentence_detection_annotate(@ru_tweet)
+    res = @texterra.sentence_detection_annotate(@en_text)
+    assert_instance_of Hash, res
+    assert_equal @en_text, res[:text]
+    res = @texterra.sentence_detection_annotate(@ru_text)
+    assert_instance_of Hash, res
+    assert_equal @ru_text, res[:text]
+    res = @texterra.sentence_detection_annotate(@en_tweet)
+    assert_instance_of Hash, res
+    assert_equal @en_tweet, res[:text]
+    res = @texterra.sentence_detection_annotate(@ru_tweet)
+    assert_instance_of Hash, res
+    assert_equal @ru_tweet, res[:text]
   end
 
   def test_tokenization_annotate
-    assert_instance_of Array, @texterra.tokenization_annotate(@en_text)
-    assert_instance_of Array, @texterra.tokenization_annotate(@ru_text)
-    assert_instance_of Array, @texterra.tokenization_annotate(@en_tweet)
-    assert_instance_of Array, @texterra.tokenization_annotate(@ru_tweet)
+    res = @texterra.tokenization_annotate(@en_text)
+    assert_instance_of Hash, res
+    assert_equal @en_text, res[:text]
+    res = @texterra.tokenization_annotate(@ru_text)
+    assert_instance_of Hash, res
+    assert_equal @ru_text, res[:text]
+    res = @texterra.tokenization_annotate(@en_tweet)
+    assert_instance_of Hash, res
+    assert_equal @en_tweet, res[:text]
+    res = @texterra.tokenization_annotate(@ru_tweet)
+    assert_instance_of Hash, res
+    assert_equal @ru_tweet, res[:text]
   end
 
   def test_lemmatization_annotate
-    assert_instance_of Array, @texterra.lemmatization_annotate(@en_text)
-    assert_instance_of Array, @texterra.lemmatization_annotate(@ru_text)
-    assert_instance_of Array, @texterra.lemmatization_annotate(@en_tweet)
-    assert_instance_of Array, @texterra.lemmatization_annotate(@ru_tweet)
+    res = @texterra.lemmatization_annotate(@en_text)
+    assert_instance_of Hash, res
+    assert_equal @en_text, res[:text]
+    res = @texterra.lemmatization_annotate(@ru_text)
+    assert_instance_of Hash, res
+    assert_equal @ru_text, res[:text]
+    res = @texterra.lemmatization_annotate(@en_tweet)
+    assert_instance_of Hash, res
+    assert_equal @en_tweet, res[:text]
+    res = @texterra.lemmatization_annotate(@ru_tweet)
+    assert_instance_of Hash, res
+    assert_equal @ru_tweet, res[:text]
   end
 
   def test_pos_tagging_annotate
-    assert_instance_of Array, @texterra.pos_tagging_annotate(@en_text)
-    assert_instance_of Array, @texterra.pos_tagging_annotate(@ru_text)
-    assert_instance_of Array, @texterra.pos_tagging_annotate(@en_tweet)
-    assert_instance_of Array, @texterra.pos_tagging_annotate(@ru_tweet)
+    res = @texterra.pos_tagging_annotate(@en_text)
+    assert_instance_of Hash, res
+    assert_equal @en_text, res[:text]
+    res = @texterra.pos_tagging_annotate(@ru_text)
+    assert_instance_of Hash, res
+    assert_equal @ru_text, res[:text]
+    res = @texterra.pos_tagging_annotate(@en_tweet)
+    assert_instance_of Hash, res
+    assert_equal @en_tweet, res[:text]
+    res = @texterra.pos_tagging_annotate(@ru_tweet)
+    assert_instance_of Hash, res
+    assert_equal @ru_tweet, res[:text]
   end
 
   def test_named_entities_annotate
-    assert_instance_of Array, @texterra.named_entities_annotate(@en_text)
-    assert_instance_of Array, @texterra.named_entities_annotate(@ru_text)
-    assert_instance_of Array, @texterra.named_entities_annotate(@en_tweet)
-    assert_instance_of Array, @texterra.named_entities_annotate(@ru_tweet)
+    res = @texterra.named_entities_annotate(@en_text)
+    assert_instance_of Hash, res
+    assert_equal @en_text, res[:text]
+    res = @texterra.named_entities_annotate(@ru_text)
+    assert_instance_of Hash, res
+    assert_equal @ru_text, res[:text]
+    res = @texterra.named_entities_annotate(@en_tweet)
+    assert_instance_of Hash, res
+    assert_equal @en_tweet, res[:text]
+    res = @texterra.named_entities_annotate(@ru_tweet)
+    assert_instance_of Hash, res
+    assert_equal @ru_tweet, res[:text]
   end
 
   def test_subjectivity_detection_annotate
-    assert_instance_of Array, @texterra.subjectivity_detection_annotate(@en_text)
-    assert_instance_of Array, @texterra.subjectivity_detection_annotate(@ru_text)
-    assert_instance_of Array, @texterra.subjectivity_detection_annotate(@en_tweet)
-    assert_instance_of Array, @texterra.subjectivity_detection_annotate(@ru_tweet)
+    res = @texterra.subjectivity_detection_annotate(@en_text)
+    assert_instance_of Hash, res
+    assert_equal @en_text, res[:text]
+    res = @texterra.subjectivity_detection_annotate(@ru_text)
+    assert_instance_of Hash, res
+    assert_equal @ru_text, res[:text]
+    res = @texterra.subjectivity_detection_annotate(@en_tweet)
+    assert_instance_of Hash, res
+    assert_equal @en_tweet, res[:text]
+    res = @texterra.subjectivity_detection_annotate(@ru_tweet)
+    assert_instance_of Hash, res
+    assert_equal @ru_tweet, res[:text]
   end
 
   def test_representation_terms

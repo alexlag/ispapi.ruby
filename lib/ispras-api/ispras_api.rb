@@ -1,3 +1,4 @@
+require 'json'
 require 'httparty'
 require 'nori'
 require_relative './api_error'
@@ -17,19 +18,41 @@ class IsprasAPI
     end
   end
 
-  def GET(path = '', params = {})
-    options = { query: params }
+  def GET(path = '', params = {}, format=:xml)
+    options = {
+      headers: headers(format),
+      query: params
+    }
     response = self.class.get "/#{path}", options
     response.code == 200 ? response.parsed_response : check_error(response)
   end
 
-  def POST(path = '', params = {}, form = {})
-    options = { query: params, body: form }
+  def POST(path = '', params = {}, body = {}, format=:xml)
+    options = {
+      headers: headers(format),
+      query: params,
+      body: body
+    }
     response = self.class.post "/#{path}", options
     response.code == 200 ? response.parsed_response : check_error(response)
   end
 
   private
+
+  def headers(format)
+    case(format)
+    when :json
+      {
+        'Accept' => 'application/json'
+      }
+    when :xml
+      {
+        'Accept' => 'application/xml'
+      }
+    else
+      {}
+    end
+  end
 
   def check_error(response)
     fail ApiError, "#{response.code} Error occured"

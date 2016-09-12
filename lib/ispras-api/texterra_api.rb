@@ -38,20 +38,15 @@ class TexterraAPI < IsprasAPI
   # @param [String] text Text to process
   # @return [Array] Array of weighted key concepts
   def key_concepts(text)
-    key_concepts = key_concepts_annotate(text)[0][:value][:concepts_weights][:entry] || []
-    key_concepts = [].push key_concepts unless key_concepts.is_a? Array
-    key_concepts.map do |kc|
-      kc[:concept][:weight] = kc[:double]
-      kc[:concept]
-    end
+    key_concepts = key_concepts_annotate(text)[:annotations][:keyconcepts][0][:value] || []
   end
 
   # Detects whether the given text has positive, negative or no sentiment
   #
   # @param [String] text Text to process
-  # @return [Array] Sentiment of the text
+  # @return [String] Sentiment of the text
   def sentiment_analysis(text)
-    polarity_detection_annotate(text)[0][:value].to_s || 'NEUTRAL'
+    polarity_detection_annotate(text)[:annotations][:polarity][0][:value].to_s || 'NEUTRAL'
     rescue NoMethodError
       'NEUTRAL'
   end
@@ -66,9 +61,11 @@ class TexterraAPI < IsprasAPI
   def domain_sentiment_analysis(text, domain = '')
     used_domain = 'general'
     sentiment = 'NEUTRAL'
-    (domain_polarity_detection_annotate(text, domain) || []).each do |an|
-      sentiment = an[:value] if an[:@class].include? 'SentimentPolarity'
-      used_domain = an[:value] if an[:@class].include? 'DomainAnnotation'
+    annotations = domain_polarity_detection_annotate(text, domain)[:annotations]
+    begin
+      used_domain = annotations[:domain][0][:value]
+      sentiment = annotations[:polarity][0][:value]
+    rescue NoMethodError
     end
     {
       domain: used_domain,
@@ -81,7 +78,7 @@ class TexterraAPI < IsprasAPI
   # @param [String] text Text to process
   # @return [Array] Texterra annotations
   def disambiguation(text)
-    disambiguation_annotate(text)
+    disambiguation_annotate(text)[:annotations][:'disambiguated-phrase']
   end
 
   def custom_query(path, query, form = nil)
